@@ -1,0 +1,40 @@
+import re
+import pycallnumber as pycn
+
+oldPrefix='M '
+newPrefix='M ACORN '
+
+regPrefix=re.compile('^M ')
+
+dewey=re.compile('[0-9]{3}\.[0-9]+\s')
+
+cutter=re.compile('[A-Z]{3,4}\s*')
+
+cutterYear=re.compile('\d{4}')
+
+cutterTrailer=re.compile('(?<=\d{4}\s)\w+$')
+
+#deweyCutter=re.compile('[0-9]{3}\.[0-9]+\s\w{3}.*$')
+
+deweysearcher=dewey.search(record['092']['a'])
+
+cuttersearcher=cutter.search(record['092']['a'])
+
+yearsearcher=cutterYear.search(record['092']['a'])
+
+trailersearcher=cutterTrailer.search(record['092']['a'])
+
+cn=pycn.callnumber(record['092']['a'])
+
+
+if record['590']==None and  deweysearcher!=None and cuttersearcher!=None:
+	FiveNinetyA='$a'  + 'dewey: ' + deweysearcher.group() + ' cutter: ' +  cuttersearcher.group() 
+	if yearsearcher!=None:
+		FiveNinetyA += '  year: ' + yearsearcher.group()
+	if trailersearcher!=None:
+		FiveNinetyA += '  trailer: ' + trailersearcher.group()
+	
+	FiveNinetyA += ' pycn cutter: ' + cn.cutters[0]
+
+	record.addField('590','$a'  + FiveNinetyA)
+
