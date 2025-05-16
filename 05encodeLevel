@@ -1,0 +1,21 @@
+import re
+
+FIC=re.compile('^\s*FIC.*$')
+MYS=re.compile('^\s*MYS.*$')
+SF=re.compile('^\s*SF.*$')
+JYFIC=re.compile('^\s*[JY]\s+FIC.*$')
+B=re.compile('^\s*B(\s.*|)$')
+JYB=re.compile('^\s*[JY]\s+B\s+.*$')
+DEWEY=re.compile('^\s*\d+\.?\d*.*$')
+JYDEWEY=re.compile('^\s*[JY]\s+\d+\.?\d*.*$')
+
+
+if record['092']!=None:
+	line=record['092']['a']
+
+	if (any (regex.match(line) for regex in [FIC, MYS, SF,JYFIC,B,JYB,DEWEY,JYDEWEY]) ):
+		if (record.leader[17]!=' '):
+			record.addField('590','$a'+record.leader)
+			record.leader = record.leader[:17]+' '+record.leader[18:]
+
+

@@ -1,0 +1,6 @@
+if  (record['590']!=None):
+	if  (record['092']['b']==None):
+		originalB=record['590']['a']
+		record.addField('092','$b'+originalB)
+		record['092']['a']=record['092']['a'].replace(originalB,"")
+		record.remove_field(record['590'])
